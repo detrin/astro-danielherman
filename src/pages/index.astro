@@ -8,11 +8,11 @@ import SkillLayout from '../components/SkillLayout.astro'
 import PostPreview from '@/components/blog/PostPreview.astro'
 
 import { Image } from 'astro:assets'
-import astro from '../assets/about-astro.png'
+import astro from '../assets/profile_photo_2.jpeg'
 
 import { getAllPosts, sortMDByDate } from '@/utils'
 
-const languages = ['lorem', 'ipsum']
+const languages = ['English', 'Slovak']
 const frontend = ['lorem', 'ipsum', 'lorem', 'ipsum', 'lorem', 'ipsum', 'lorem']
 const backend = ['lorem', 'ipsum', 'lorem', 'ipsum']
 const others = ['lorem', 'ipsum', 'lorem', 'ipsum', 'lorem']
@@ -33,22 +33,9 @@ const allPostsByDate = sortMDByDate(allPosts).slice(0, MAX_POSTS)
 			/>
 
 			<div class='flex flex-col items-center gap-y-4'>
-				<h1 class='text-3xl font-bold'>Lorem ipsum dolor</h1>
-				<a
-					href='https://github.com/srleom/astro-theme-resume.git'
-					class='flex flex-row items-center gap-x-3 rounded-3xl border border-input px-4 py-2 text-sm shadow-sm transition-all hover:shadow-md'
-				>
-					<span class='relative flex items-center justify-center'>
-						<span
-							class='absolute inline-flex h-2 w-2 animate-ping rounded-full border border-green-400 bg-green-400 opacity-75'
-						></span>
-						<span class='relative inline-flex h-2 w-2 rounded-full bg-green-400'></span>
-					</span>
-
-					<p class='font-medium'>Get free template</p>
-				</a>
+				<h1 class='text-3xl font-bold'>Daniel Herman</h1>
 				<div class='flex flex-wrap justify-center gap-x-7 gap-y-3'>
-					<Label title='Lorem Ipsum'>
+					<Label title='Data Scientist'>
 						<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' class='h-5 w-5' slot='icon'
 							><path
 								fill='currentColor'
@@ -56,7 +43,7 @@ const allPostsByDate = sortMDByDate(allPosts).slice(0, MAX_POSTS)
 							></path></svg
 						>
 					</Label>
-					<Label title='Ipsum'>
+					<Label title='Prague'>
 						<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' class='h-5 w-5' slot='icon'
 							><path
 								fill='currentColor'
@@ -67,7 +54,7 @@ const allPostsByDate = sortMDByDate(allPosts).slice(0, MAX_POSTS)
 					<Label
 						title='Connect on Linkedin'
 						as='a'
-						href='https://www.linkedin.com/in/example/'
+						href='https://www.linkedin.com/in/herman-daniel/'
 						target='_blank'
 					>
 						<svg
@@ -87,10 +74,7 @@ const allPostsByDate = sortMDByDate(allPosts).slice(0, MAX_POSTS)
 
 		<Section title='About'>
 			<p class='text-muted-foreground'>
-				Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis atque quia omnis
-				consectetur, voluptas praesentium veniam blanditiis ratione asperiores accusantium laborum
-				odit commodi quis deserunt incidunt et dolor iure ut! Lorem ipsum dolor sit, amet
-				consectetur adipisicing elit. Alias quia, doloribus ut beatae perspiciatis voluptatibus.
+				Proven ability to solve complex problems using innovative and non-standard solutions. Comfortable working independently and excels in systematic approaches. Eager to apply my strong problem-solving skills and passion for coding to a challenging data science role, where I can contribute to strategic decision-making and performance improvement.
 			</p>
 		</Section>
 		{
@@ -109,55 +93,96 @@ const allPostsByDate = sortMDByDate(allPosts).slice(0, MAX_POSTS)
 
 		<Section title='Experience'>
 			<Card
-				heading='Lorem Ipsum'
-				subheading='Sit amet consectetur'
-				date='Dec 2022 - Nov 2023'
-				imagePath='/src/assets/about-astro.png'
+				heading='Similarweb'
+				subheading='Data Scientist (full time)'
+				date='April 2024 - present'
+				imagePath='/src/assets/similarweb.png'
 				altText='Lorem, ipsum dolor sit'
 				imageClass='h-12 w-auto md:-left-16'
 			>
 				<ul class='ml-4 list-disc text-muted-foreground'>
 					<li>
-						Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolore debitis recusandae, ut
-						molestiae laboriosam pariatur!
+						The largest project is on automatic segmentation of visits using keyword searches of domains (e.g. Smartphones for Samsung). Working in a newly created team.
 
-						<li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae, pariatur!</li>
+						<li>Unsupervised ML / clustering / statistics / LLM / embeddings</li>
+						<li>Python / pyspark / Data Bricks / AWS / polars</li>
 					</li>
 				</ul>
 			</Card>
 			<Card
-				heading='Lorem Ipsum'
-				subheading='Sit amet consectetur'
-				date='Dec 2022 - Nov 2023'
-				imagePath='/src/assets/about-astro.png'
+				heading='Nova TV'
+				subheading='Data Scientist (bodyshop via Home Credit International)'
+				date='August 2023 - March 2024'
+				imagePath='/src/assets/novatv.jpeg'
 				altText='Lorem, ipsum dolor sit'
 				imageClass='h-12 w-auto md:-left-16'
-			/>
+			>
+				<ul class='ml-4 list-disc text-muted-foreground'>
+					<li>
+						The project was oriented on the short-term prediction of shares in linear TV broadcasts. Newly created small team, design of the model pipeline from scratch. Exploration for target definition. Data cleaning, setup of ETLs on keboola. Design of features and model training. Iterations with end customers.
+
+						<li>Supervised ML / regression / LightGBM</li>
+						<li>Python / polars / Rust / keboola / Machine Learning / Go / Azure</li>
+					</li>
+				</ul>
+			</Card>
+			<Card
+				heading='Home credit International'
+				subheading='Data Scientist (full time)'
+				date='October 2021 - March 2024'
+				imagePath='/src/assets/homecredit.png'
+				altText='Lorem, ipsum dolor sit'
+				imageClass='h-12 w-auto md:-left-16'
+			>
+				<ul class='ml-4 list-disc text-muted-foreground'>
+					<li>
+						Skilled in developing risk models for collections and underwriting through Logistic Regression, LightGBM, and statistical tests. Resurrection of an internal package for scorecard development and improving it significantly. Experienced in speech-to-text processing utilizing TensorFlow and LightGBM for voice recognition projects. Proficient in time series prediction using SARIMAX and Prophet for confidence interval estimation and alarm triggering. Creating a comprehensive internal Spark cookbook. Also, adept at light DevOps and Linux support and serving static React websites using nginx.
+
+						<li>Supervised ML / classification / LightGBM / Logistic Regression / TensorFlow / PyTorch / shap / pyspark</li>
+						<li>Python / SQL (Oracle) / polars / Linux / Azure</li>
+					</li>
+				</ul>
+			</Card>
+			<Card
+				heading='IOCB'
+				subheading='Student working in academia (part time)'
+				date='October 2021 - March 2024'
+				imagePath='/src/assets/uochb2.jpg'
+				altText='Lorem, ipsum dolor sit'
+				imageClass='h-12 w-auto md:-left-16'
+			>
+				<ul class='ml-4 list-disc text-muted-foreground'>
+					<li>
+						Using protein fragments from the PDB I developed a method for constructing small metallopro- teins.
+
+						<li>Python / Unsupervised ML / Research in computational chemistry</li>
+					</li>
+				</ul>
+			</Card>
 		</Section>
 
 		<Section title='Education'>
 			<Card
-				heading='Lorem Ipsum'
-				subheading='Sit amet consectetur'
-				date='Dec 2022 - Nov 2023'
-				imagePath='/src/assets/about-astro.png'
+				heading='Master’s degree at Charles university in Prague'
+				subheading='Theoretical Biophysics and Chemical Physics'
+				date='September 2020 - February 2023'
+				imagePath='/src/assets/charles_university.png'
 				altText='Lorem, ipsum dolor sit'
 				imageClass='h-12 w-auto md:-left-16'
 			>
 				<ul class='ml-4 list-disc text-muted-foreground'>
 					<li>
-						Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolore debitis recusandae, ut
-						molestiae laboriosam pariatur!
+						Conducted in-depth research on Redfield equations, resulting in a universally applicable improve- ment technique of a given set of integrodifferential equations. 
 
-						<li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae, pariatur!</li>
+						<li>Thesis: https://github.com/detrin/Master-Thesis/blob/main/thesis.pdf</li>
 					</li>
 				</ul>
 			</Card>
 			<Card
-				heading='Lorem Ipsum'
-				subheading='Sit amet consectetur'
-				date='Dec 2022 - Nov 2023'
-				imagePath='/src/assets/about-astro.png'
+				heading='Bachelor’s Degre at Charles university in Prague'
+				subheading='General Physics'
+				date='September 2017 - September 2020'
+				imagePath='/src/assets/charles_university.png'
 				altText='Lorem, ipsum dolor sit'
 				imageClass='h-12 w-auto md:-left-16'
 			/>
@@ -182,29 +207,6 @@ const allPostsByDate = sortMDByDate(allPosts).slice(0, MAX_POSTS)
 					class='w-full sm:w-1/2'
 				/>
 			</div>
-		</Section>
-
-		<Section title='Certifications'>
-			<Card
-				as='a'
-				heading='Lorem ipsum, dolor sit amet consectetur adipisicing.'
-				subheading='Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam dicta magni consequuntur corrupti.'
-				date='Mar 2024 - Mar 2024'
-				imagePath='/src/assets/about-astro.png'
-				altText='Lorem, ipsum dolor sit'
-				imageClass='h-11 w-auto md:-left-16'
-				href='https://www.google.com'
-			/>
-			<Card
-				as='a'
-				heading='Lorem ipsum, dolor sit amet'
-				subheading='Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam dicta.'
-				date='Mar 2029 - Mar 2032'
-				imagePath='/src/assets/about-astro.png'
-				altText='Lorem, ipsum dolor sit'
-				imageClass='h-11 w-auto md:-left-16'
-				href='https://www.google.com'
-			/>
 		</Section>
 
 		<Section title='Skills'>
