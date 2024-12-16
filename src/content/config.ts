@@ -29,7 +29,8 @@ const post = defineCollection({
 				.optional(),
 			draft: z.boolean().default(false),
 			tags: z.array(z.string()).default([]).transform(removeDupsAndLowerCase),
-			ogImage: z.string().optional()
+			ogImage: z.string().optional(),
+			link: z.string().max(1024).optional()
 		})
 })
 
