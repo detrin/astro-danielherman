@@ -12,7 +12,6 @@ type Props<Tag extends HTMLTag> = Polymorphic<{ as: Tag }> & {
 const { as: Tag = 'div', post, withDesc = false } = Astro.props
 const postDate = post.data.updatedDate ?? post.data.publishDate
 const link = post.data.link ?? `/blog/${post.slug}/`
-console.log(post.data.link, link);
 ---
 
 <li class='flex flex-col gap-2 sm:flex-row sm:gap-x-4 [&_q]:basis-full'>
