@@ -1,0 +1,251 @@
+---
+/* No server-side code needed */
+---
+
+<h1>Surebet Calculator</h1>
+<p>Use this calculator to find optimal bets for arbitrage opportunities between two odds.</p>
+
+<!-- Form -->
+<form id="calculatorForm" style="margin-bottom: 20px;">
+  <label>
+    <strong>Odd 1:</strong>
+    <input type="number" step="0.01" id="odd1" required />
+  </label>
+  <label>
+    <strong>Odd 2:</strong>
+    <input type="number" step="0.01" id="odd2" required />
+  </label>
+  <label>
+    <strong>Granularity:</strong>
+    <input type="number" step="0.01" id="granularity" required />
+  </label>
+  <br /><br />
+  <label>
+    <strong>Minimum Total Bet:</strong>
+    <input type="number" step="0.01" id="minTotalBet" required />
+  </label>
+  <label>
+    <strong>Maximum Total Bet:</strong>
+    <input type="number" step="0.01" id="maxTotalBet" required />
+  </label>
+  <label>
+    <strong>Step Size:</strong>
+    <input type="number" step="0.01" id="stepTotalBet" required />
+  </label>
+  <br /><br />
+  <button type="submit">Calculate</button>
+</form>
+
+<!-- Error Message -->
+<div id="errorMessage" style="color: red; margin-bottom: 20px; display: none;"></div>
+
+<!-- Table Container -->
+<div id="tableContainer"></div>
+
+<!-- Client-side JavaScript -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Access URL parameters
+    const params = new URLSearchParams(window.location.search);
+
+    // Extract and parse parameters or set default values
+    const odd1ParamString = params.get('odd1');
+    const odd2ParamString = params.get('odd2');
+    const granularityParamString = params.get('granularity');
+    const minTotalBetParamString = params.get('min_total_bet');
+    const maxTotalBetParamString = params.get('max_total_bet');
+    const stepTotalBetParamString = params.get('step_total_bet');
+
+    const odd1Param = odd1ParamString ? parseFloat(odd1ParamString) : 1.37;
+    const odd2Param = odd2ParamString ? parseFloat(odd2ParamString) : 3.87;
+    const granularityParam = granularityParamString ? parseFloat(granularityParamString) : 0.05;
+    const minTotalBetParam = minTotalBetParamString ? parseFloat(minTotalBetParamString) : 10;
+    const maxTotalBetParam = maxTotalBetParamString ? parseFloat(maxTotalBetParamString) : 50;
+    const stepTotalBetParam = stepTotalBetParamString ? parseFloat(stepTotalBetParamString) : 2;
+
+    // State variables
+    let odd1 = odd1Param;
+    let odd2 = odd2Param;
+    let granularity = granularityParam;
+    let minTotalBet = minTotalBetParam;
+    let maxTotalBet = maxTotalBetParam;
+    let stepTotalBet = stepTotalBetParam;
+
+    interface TableRow {
+      totalBet: string,
+      betOnOutcome1: string,
+      betOnOutcome2: string,
+      profitIfOutcome1Wins: string,
+      profitIfOutcome2Wins: string,
+      minProfit: string
+    }
+    
+    let tableData: TableRow[] = [];
+    let errorMessage = '';
+
+    // Perform initial calculation
+    calculateSurebet();
+
+    // Attach event listener to form
+    const calculatorForm = document.getElementById('calculatorForm');
+    if (calculatorForm) {
+      calculatorForm.addEventListener('submit', handleSubmit);
+    } else {
+      console.error('Calculator form not found.');
+    }
+
+    // Function to perform calculation
+    function calculateSurebet() {
+      errorMessage = ''; // Reset error message
+
+      // Input validation
+      if (isNaN(odd1) || isNaN(odd2) || isNaN(granularity) || odd1 <= 1 || odd2 <= 1 || granularity <= 0) {
+        errorMessage = 'Please enter valid odds greater than 1 and a positive granularity.';
+        tableData = [];
+        render();
+        return;
+      }
+      if (isNaN(minTotalBet) || isNaN(maxTotalBet) || isNaN(stepTotalBet) || minTotalBet <= 0 || maxTotalBet <= 0 || stepTotalBet <= 0) {
+        errorMessage = 'Please enter positive values for minimum bet, maximum bet, and step size.';
+        tableData = [];
+        render();
+        return;
+      }
+      if (minTotalBet >= maxTotalBet) {
+        errorMessage = 'Minimum total bet must be less than the maximum total bet.';
+        tableData = [];
+        render();
+        return;
+      }
+
+      // Check for arbitrage opportunity
+      const arbitragePercentage = (1 / odd1) + (1 / odd2);
+      if (arbitragePercentage >= 1) {
+        errorMessage = 'No arbitrage opportunity exists with these odds.';
+        tableData = [];
+        render();
+        return;
+      }
+
+      // Define the range of total bets
+      const totalBetRange = [];
+      for (let T = minTotalBet; T <= maxTotalBet; T += stepTotalBet) {
+        totalBetRange.push(T);
+      }
+
+      // Calculate proportions
+      const proportion1 = (1 / odd1) / ((1 / odd1) + (1 / odd2));
+
+      // Prepare table data
+      const rows = totalBetRange.map((T) => {
+        const w1 = T * proportion1;
+
+        const w1Adj = Math.round(w1 / granularity) * granularity;
+        const w2Adj = +(T - w1Adj).toFixed(2);
+
+        const profit1 = w1Adj * odd1 - T;
+        const profit2 = w2Adj * odd2 - T;
+        const minProfit = Math.min(profit1, profit2);
+
+        return {
+          totalBet: T.toFixed(2),
+          betOnOutcome1: w1Adj.toFixed(2),
+          betOnOutcome2: w2Adj.toFixed(2),
+          profitIfOutcome1Wins: profit1.toFixed(2),
+          profitIfOutcome2Wins: profit2.toFixed(2),
+          minProfit: minProfit.toFixed(2),
+        };
+      });
+
+      tableData = rows;
+      render();
+    }
+
+    // Helper function to get input value
+    function getInputValue(id: string): string {
+      const element = document.getElementById(id);
+      if (element && element instanceof HTMLInputElement) {
+        return element.value;
+      } else {
+        throw new Error(`Element with id "${id}" not found or is not an input element.`);
+      }
+    }
+
+    // Helper function to set input value
+    function setInputValue(id: string, value: string): void {
+      const element = document.getElementById(id);
+      if (element && element instanceof HTMLInputElement) {
+        element.value = value;
+      } else {
+        console.error(`Element with id "${id}" not found or is not an input element.`);
+      }
+    }
+
+    // Function to render the form and table
+    function render() {
+      // Update form fields
+      setInputValue('odd1', odd1.toString());
+      setInputValue('odd2', odd2.toString());
+      setInputValue('granularity', granularity.toString());
+      setInputValue('minTotalBet', minTotalBet.toString());
+      setInputValue('maxTotalBet', maxTotalBet.toString());
+      setInputValue('stepTotalBet', stepTotalBet.toString());
+
+      // Display error message
+      const errorDiv = document.getElementById('errorMessage');
+      if (errorDiv) {
+        if (errorMessage) {
+          errorDiv.textContent = 'Error: ' + errorMessage;
+          errorDiv.style.display = 'block';
+        } else {
+          errorDiv.style.display = 'none';
+        }
+      } else {
+        console.error('Error message div not found.');
+      }
+
+      // Display table data
+      const tableContainer = document.getElementById('tableContainer');
+      if (tableContainer) {
+        if (tableData.length > 0) {
+          let html = '<table border="1" cellPadding="5" style="border-collapse: collapse;"><thead><tr><th>Total Bet</th><th>Bet on Outcome 1</th><th>Bet on Outcome 2</th><th>Profit if Outcome 1 Wins</th><th>Profit if Outcome 2 Wins</th><th>Minimum Profit</th></tr></thead><tbody>';
+          tableData.forEach(function(row) {
+            html += `<tr>
+                        <td>${row.totalBet}</td>
+                        <td>${row.betOnOutcome1}</td>
+                        <td>${row.betOnOutcome2}</td>
+                        <td>${row.profitIfOutcome1Wins}</td>
+                        <td>${row.profitIfOutcome2Wins}</td>
+                        <td>${row.minProfit}</td>
+                      </tr>`;
+          });
+          html += '</tbody></table>';
+          tableContainer.innerHTML = html;
+        } else {
+          tableContainer.innerHTML = '';
+        }
+      } else {
+        console.error('Table container div not found.');
+      }
+    }
+
+    // Handle form submission
+    function handleSubmit(e: Event) {
+      e.preventDefault();
+
+      try {
+        // Read form inputs
+        odd1 = parseFloat(getInputValue('odd1'));
+        odd2 = parseFloat(getInputValue('odd2'));
+        granularity = parseFloat(getInputValue('granularity'));
+        minTotalBet = parseFloat(getInputValue('minTotalBet'));
+        maxTotalBet = parseFloat(getInputValue('maxTotalBet'));
+        stepTotalBet = parseFloat(getInputValue('stepTotalBet'));
+
+        calculateSurebet();
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  });
+</script>
